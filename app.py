@@ -24,7 +24,7 @@ symptoms = [
     "yellowish_skin", "dark_urine", "nausea", "loss_of_appetite", "pain_behind_the_eyes", "back_pain", 
     "constipation", "abdominal_pain", "diarrhoea", "mild_fever", "yellow_urine", "yellowing_of_eyes", 
     "acute_liver_failure", "fluid_overload", "swelling_of_stomach", "swelled_lymph_nodes", "malaise", 
-    "blurred_and_distorted_vision", "phlegm", "throat_irritation", "redness_of_eyes", "sinus_pressure", 
+    "blurred_and_distorted_vision", "c:\$Recycle.Bin\S-1-5-21-3830242582-982210628-1531626654-1001\$R63E9MY.pkl", "throat_irritation", "redness_of_eyes", "sinus_pressure", 
     "runny_nose", "congestion", "chest_pain", "weakness_in_limbs", "fast_heart_rate", 
     "pain_during_bowel_movements", "pain_in_anal_region", "bloody_stool", "irritation_in_anus", "neck_pain", 
     "dizziness", "cramps", "bruising", "obesity", "swollen_legs", "swollen_blood_vessels", "puffy_face_and_eyes", 
