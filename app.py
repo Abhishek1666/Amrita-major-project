@@ -1,15 +1,15 @@
+
 from flask import Flask, request, jsonify
 import joblib
 import numpy as np
-import os
 
 # Initialize Flask app
 app = Flask(__name__)
 
 # Load the trained model and label encoder
 try:
-    model_path = os.path.join(os.path.dirname(__file__), 'models/disease_prediction_model.pkl')
-    label_encoder_path = os.path.join(os.path.dirname(__file__), 'models/label_encoder.pkl')
+    model_path = r'C:\Users\Abhishek\Downloads\Major Project Disease Predictor Backend\disease_prediction_model.pkl'
+    label_encoder_path = r'C:\Users\Abhishek\Downloads\Major Project Disease Predictor Backend\label_encoder.pkl'
     model = joblib.load(model_path)
     label_encoder = joblib.load(label_encoder_path)
 except Exception as e:
@@ -77,6 +77,3 @@ def predict():
         return jsonify({'predicted_disease': predicted_disease[0]})
     except Exception as e:
         return jsonify({'error': str(e)}), 500
-
-if __name__ == "__main__":
-    app.run(debug=True)
