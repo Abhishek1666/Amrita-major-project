@@ -75,7 +75,7 @@ def predict():
         symptoms_provided = data.get('symptoms', [])
 
         if not symptoms_provided:
-             logger.error("No symptoms provided")
+            logger.error("No symptoms provided")
             return jsonify({'error': 'No symptoms provided'}), 400
 
         # Create a zero vector for all features
