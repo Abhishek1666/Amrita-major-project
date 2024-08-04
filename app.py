@@ -6,13 +6,21 @@ import os
 # Initialize Flask app
 app = Flask(__name__)
 
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+
 # Load the trained model and label encoder
 try:
     model_path = os.path.join(os.path.dirname(__file__), 'models/disease_prediction_model.pkl')
     label_encoder_path = os.path.join(os.path.dirname(__file__), 'models/label_encoder.pkl')
     model = joblib.load(model_path)
     label_encoder = joblib.load(label_encoder_path)
+    logger.info("Model and label encoder loaded successfully.")
 except Exception as e:
+    logger.error(f"Error loading model or label encoder: {e}")
     raise Exception(f"Error loading model or label encoder: {e}")
 
 # Define feature names (assuming you have them from the training data)
@@ -47,6 +55,19 @@ symptoms = [
 
 symptom_dict = {index: symptom for index, symptom in enumerate(symptoms)}
 
+@app.before_request
+def before_request():
+    request.start_time = time.time()
+
+# Add an after request hook to log request duration and handle timeouts
+@app.after_request
+def after_request(response):
+    duration = time.time() - request.start_time
+    logger.info(f"Request to {request.path} took {duration:.2f} seconds")
+    if duration > 5:  # Assuming 5 seconds as a threshold for timeout
+        logger.warning(f"Request to {request.path} took too long: {duration:.2f} seconds")
+    return response
+
 @app.route('/predict', methods=['POST'])
 def predict():
     try:
@@ -54,6 +75,7 @@ def predict():
         symptoms_provided = data.get('symptoms', [])
 
         if not symptoms_provided:
+             logger.error("No symptoms provided")
             return jsonify({'error': 'No symptoms provided'}), 400
 
         # Create a zero vector for all features
@@ -65,6 +87,7 @@ def predict():
                 index = symptoms.index(symptom)
                 input_vector[index] = 1
             else:
+                logger.error(f"Invalid symptom: {symptom}")
                 return jsonify({'error': f'Invalid symptom: {symptom}'}), 400
 
         # Reshape the vector for prediction
@@ -73,9 +96,10 @@ def predict():
         # Make prediction
         prediction = model.predict(input_vector)
         predicted_disease = label_encoder.inverse_transform(prediction)
-        
+        logger.info(f"Prediction successful: {predicted_disease[0]}")
         return jsonify({'predicted_disease': predicted_disease[0]})
     except Exception as e:
+        logger.error(f"Error during prediction: {str(e)}")
         return jsonify({'error': str(e)}), 500
 
 if __name__ == "__main__":
