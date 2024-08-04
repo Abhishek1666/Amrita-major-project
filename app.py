@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 import joblib
 import numpy as np
 import os
+import logging
 
 # Initialize Flask app
 app = Flask(__name__)
